@@ -9,3 +9,5 @@
 #else
     #error MyGE only supports Windows
 #endif // MG_PLATFORM_WINDOWS
+
+#define BITT(x) (1 << x)

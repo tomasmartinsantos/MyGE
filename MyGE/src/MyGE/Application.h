@@ -2,6 +2,7 @@
 
 #include "Core.h"
 
+
 namespace MyGE {
 
     class MYGE_API Application
