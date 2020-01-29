@@ -1,3 +1,4 @@
+#include "mgpch.h"
 #include "Application.h"
 #include "MyGE/Events/Event.h"
 #include "MyGE/Events/ApplicationEvent.h"

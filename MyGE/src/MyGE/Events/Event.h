@@ -2,9 +2,6 @@
 
 #include "MyGE/Core.h"
 
-#include <string>
-#include <functional>
-
 
 namespace MyGE {
 

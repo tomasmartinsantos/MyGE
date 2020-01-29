@@ -19,6 +19,9 @@ project "MyGE"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "mgpch.h"
+	pchsource "MyGE/src/mgpch.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
