@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "MyGE/Log.h"
+
 #ifdef MG_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif // MG_PLATFORM_WINDOWS

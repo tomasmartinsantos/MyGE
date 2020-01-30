@@ -4,12 +4,14 @@
 #include "MyGE/Events/ApplicationEvent.h"
 #include "MyGE/Log.h"
 
+#include "GLFW/glfw3.h"
+
 
 namespace MyGE {
 
     Application::Application()
     {
-
+        m_Window = std::unique_ptr<Window>(Window::Create());
     }
 
     Application::~Application()
@@ -20,13 +22,13 @@ namespace MyGE {
 
     void Application::Run()
     {
-        WindowResizeEvent E(1280, 720);
-        if (E.IsInCategory(EventCategoryApplication))
+        while (m_Running)
         {
-            MG_TRACE(E);
-        }
+            glClearColor(1, 0, 1, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        while (true);
+            m_Window->OnUpdate();
+        }
     }
 
 }

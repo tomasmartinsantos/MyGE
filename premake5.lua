@@ -11,6 +11,12 @@ workspace "MyGE"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories realtive to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "MyGE/Vendor/GLFW/include"
+
+include "MyGE/vendor/GLFW"
+
 project "MyGE"
 	location "MyGE"
 	kind "SharedLib"
@@ -31,7 +37,14 @@ project "MyGE"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{prj.name}/vendor/spdlog/include"
+		"%{prj.name}/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
