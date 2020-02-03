@@ -65,14 +65,17 @@ project "MyGE"
 
 	filter "configurations:Debug"
 		defines "MG_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MG_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "MG_DIST"
+		buildoptions "/MD"
 		optimize "On"
 
 project "Sandbox"
@@ -112,12 +115,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "MG_DEBUG"
+		buildoptions "/MDd"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MG_RELEASE"
+		buildoptions "/MD"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "MG_DIST"
+		buildoptions "/MD"
 		optimize "On"

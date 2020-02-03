@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "MyGE/LayerStack.h"
 #include "MyGE/Events/Event.h"
 #include "MyGE/Events/ApplicationEvent.h"
 
@@ -18,6 +19,9 @@ namespace MyGE {
             void Run();
 
             void OnEvent(Event& E);
+
+            void PushLayer(Layer* Layer);
+            void PushOverlay(Layer* Overlay);
         private:
             bool OnWindowCloseEvent(WindowCloseEvent& Event);
 
@@ -25,6 +29,7 @@ namespace MyGE {
         private:
             std::unique_ptr<Window> m_Window;
             bool m_Running = true;
+            LayerStack m_LayerStack;
     };
 
     // To de defined on client

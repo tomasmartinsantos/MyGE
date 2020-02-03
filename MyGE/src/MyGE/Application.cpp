@@ -21,12 +21,29 @@ namespace MyGE {
 
     }
 
+    void Application::PushLayer(Layer* Layer)
+    {
+        m_LayerStack.PushLayer(Layer);
+    }
+
+    void Application::PushOverlay(Layer* Overlay)
+    {
+        m_LayerStack.PushOverlay(Overlay);
+    }
+
     void Application::OnEvent(Event& E)
     {
-        MG_CORE_TRACE("{0}", E);
-
         EventDispatcher Dispatcher(E);
         Dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowCloseEvent));
+
+        for (auto It = m_LayerStack.end(); It != m_LayerStack.begin();)
+        {
+            (*--It)->OnEvent(E);
+            if (E.HasBeenHandled())
+            {
+                break;
+            }
+        }
     }
 
 
@@ -36,6 +53,11 @@ namespace MyGE {
         {
             glClearColor(1, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            for (Layer* Layer : m_LayerStack)
+            {
+                Layer->OnUpdate();
+            }
 
             m_Window->OnUpdate();
         }

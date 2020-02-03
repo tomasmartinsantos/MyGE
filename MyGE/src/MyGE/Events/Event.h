@@ -48,6 +48,11 @@ namespace MyGE {
                 return GetCategoryFlag() & Category;
             }
 
+            inline bool HasBeenHandled() const
+            {
+                return m_Handled;
+            }
+
         // Varaiables
         protected:
             bool m_Handled = false;
