@@ -2,6 +2,8 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "MyGE/Events/Event.h"
+#include "MyGE/Events/ApplicationEvent.h"
 
 
 namespace MyGE {
@@ -14,6 +16,11 @@ namespace MyGE {
             virtual ~Application();
 
             void Run();
+
+            void OnEvent(Event& E);
+        private:
+            bool OnWindowCloseEvent(WindowCloseEvent& Event);
+
         // Variables
         private:
             std::unique_ptr<Window> m_Window;

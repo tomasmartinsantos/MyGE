@@ -66,7 +66,7 @@ namespace MyGE {
             template<typename T>
             bool Dispatch(EventFn<T> Func)
             {
-                if (m_Event.GetEventType() = T::GetStaticType())
+                if (m_Event.GetEventType() == T::GetStaticType())
                 {
                     m_Event.m_Handled = Func(*(T*)&m_Event);
                     return true;

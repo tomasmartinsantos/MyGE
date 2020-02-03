@@ -1,7 +1,6 @@
 #include "mgpch.h"
 #include "Application.h"
-#include "MyGE/Events/Event.h"
-#include "MyGE/Events/ApplicationEvent.h"
+
 #include "MyGE/Log.h"
 
 #include "GLFW/glfw3.h"
@@ -9,14 +8,25 @@
 
 namespace MyGE {
 
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
     Application::Application()
     {
         m_Window = std::unique_ptr<Window>(Window::Create());
+        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     }
 
     Application::~Application()
     {
 
+    }
+
+    void Application::OnEvent(Event& E)
+    {
+        MG_CORE_TRACE("{0}", E);
+
+        EventDispatcher Dispatcher(E);
+        Dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowCloseEvent));
     }
 
 
@@ -31,4 +41,9 @@ namespace MyGE {
         }
     }
 
+    bool Application::OnWindowCloseEvent(WindowCloseEvent& Event)
+    {
+        m_Running = false;
+        return true;
+    }
 }
