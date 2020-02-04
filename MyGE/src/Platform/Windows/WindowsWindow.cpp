@@ -3,6 +3,7 @@
 #include "MyGE/Events/ApplicationEvent.h"
 #include "MyGE/Events/KeyEvent.h"
 #include "MyGE/Events/MouseEvent.h"
+#include <glad/glad.h>
 
 
 namespace MyGE {
@@ -40,13 +41,15 @@ namespace MyGE {
         if (!s_GLFWInitialized)
         {
             int Success = glfwInit();
-            MG_CORE_ASSERT(Success, "Could NOT initialized GLFW!");
+            MG_CORE_ASSERT(Success, "Could NOT initialize GLFW!");
             glfwSetErrorCallback(GLFWErrorCallback);
             s_GLFWInitialized = true;
         }
 
         m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+        int Status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        MG_CORE_ASSERT(Status, "Could NOT initialize Glad!");
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
