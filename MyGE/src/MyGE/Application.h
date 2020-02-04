@@ -22,6 +22,9 @@ namespace MyGE {
 
             void PushLayer(Layer* Layer);
             void PushOverlay(Layer* Overlay);
+
+            inline static Application& Get() { return *s_Instance; }
+            inline Window& GetWindow() { return *m_Window; }
         private:
             bool OnWindowCloseEvent(WindowCloseEvent& Event);
 
@@ -30,6 +33,8 @@ namespace MyGE {
             std::unique_ptr<Window> m_Window;
             bool m_Running = true;
             LayerStack m_LayerStack;
+
+            static Application* s_Instance;
     };
 
     // To de defined on client
