@@ -10,6 +10,11 @@
     #error MyGE only supports Windows
 #endif // MG_PLATFORM_WINDOWS
 
+#ifdef MG_DEBUG
+    #define MG_ENABLE_ASSERTS
+#endif // MG_DEBUG
+
+
 #ifdef MG_ENABLE_ASSERTS
     #define MG_ASSERT(x, ...) {if(!(x)) {MG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
     #define MG_CORE_ASSERT(x, ...) {if(!(x)) {MG_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

@@ -17,14 +17,18 @@ IncludeDir["GLFW"] = "MyGE/Vendor/GLFW/include"
 IncludeDir["Glad"] = "MyGE/Vendor/Glad/include"
 IncludeDir["ImGui"] = "MyGE/Vendor/imgui"
 
-include "MyGE/vendor/GLFW"
-include "MyGE/vendor/Glad"
-include "MyGE/vendor/imgui"
+group "Dependencies"
+	include "MyGE/vendor/GLFW"
+	include "MyGE/vendor/Glad"
+	include "MyGE/vendor/imgui"
+
+group ""
 
 project "MyGE"
 	location "MyGE"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -57,7 +61,6 @@ project "MyGE"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -69,28 +72,29 @@ project "MyGE"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
 		defines "MG_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MG_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "MG_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -114,7 +118,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -124,15 +127,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "MG_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "MG_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Release"
 		defines "MG_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
