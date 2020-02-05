@@ -8,8 +8,6 @@
 
 namespace MyGE {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
-
     Application* Application::s_Instance = nullptr;
 
     Application::Application()
@@ -18,7 +16,7 @@ namespace MyGE {
         s_Instance = this;
 
         m_Window = std::unique_ptr<Window>(Window::Create());
-        m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+        m_Window->SetEventCallback(MG_BIND_EVENT_FN(Application::OnEvent));
     }
 
     Application::~Application()
@@ -41,7 +39,7 @@ namespace MyGE {
     void Application::OnEvent(Event& E)
     {
         EventDispatcher Dispatcher(E);
-        Dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowCloseEvent));
+        Dispatcher.Dispatch<WindowCloseEvent>(MG_BIND_EVENT_FN(Application::OnWindowCloseEvent));
 
         for (auto It = m_LayerStack.end(); It != m_LayerStack.begin();)
         {

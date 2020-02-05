@@ -60,4 +60,21 @@ namespace MyGE {
 
             EVENT_CLASS_TYPE(KeyReleased)
     };
+
+    class MYGE_API KeyTypedEvent : public KeyEvent
+    {
+        // Methods
+        public:
+            KeyTypedEvent(int KeyCode)
+                : KeyEvent(KeyCode) {}
+
+            std::string ToString() const override
+            {
+                std::stringstream ss;
+                ss << "KeyTypedEvent: " << m_KeyCode;
+                return ss.str();
+            }
+
+            EVENT_CLASS_TYPE(KeyTyped)
+    };
 }

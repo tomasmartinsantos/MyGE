@@ -99,6 +99,14 @@ namespace MyGE {
             }
         });
 
+        glfwSetCharCallback(m_Window, [](GLFWwindow* Window, unsigned int Key)
+        {
+            WindowData& Data = *(WindowData*)glfwGetWindowUserPointer(Window);
+
+            KeyTypedEvent Event(Key);
+            Data.EventCallback(Event);
+        });
+
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* Window, int Button, int Action, int Mod)
         {
             WindowData& Data = *(WindowData*)glfwGetWindowUserPointer(Window);
