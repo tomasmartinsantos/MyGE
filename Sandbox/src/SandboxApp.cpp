@@ -12,12 +12,16 @@ class ExampleLayer : public MyGE::Layer
 
         virtual void OnUpdate() override
         {
-            MG_INFO("ExampleLayer::OnUpdate");
+            //MG_INFO("ExampleLayer::OnUpdate");
+            if (MyGE::Input::IsKeyPressed(MG_KEY_T))
+            {
+                MG_INFO("{0} PRESSED", (char)(MG_KEY_T));
+            }
         }
 
         virtual void OnEvent(MyGE::Event& Event) override
         {
-            MG_TRACE("{0}", Event);
+            //MG_TRACE("{0}", Event);
         }
 };
 

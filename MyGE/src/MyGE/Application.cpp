@@ -65,7 +65,7 @@ namespace MyGE {
                 Layer->OnUpdate();
             }
 
-            MG_CORE_TRACE("{0}, {1}", Input::GetMouseX(), Input::GetMouseY());
+            //MG_CORE_TRACE("{0}, {1}", Input::GetMouseX(), Input::GetMouseY());
 
             m_Window->OnUpdate();
         }
