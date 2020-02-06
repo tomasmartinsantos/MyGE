@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "MyGE/Log.h"
+#include "MyGE/Input.h"
 
 #include <glad/glad.h>
 
@@ -63,6 +64,8 @@ namespace MyGE {
             {
                 Layer->OnUpdate();
             }
+
+            MG_CORE_TRACE("{0}, {1}", Input::GetMouseX(), Input::GetMouseY());
 
             m_Window->OnUpdate();
         }

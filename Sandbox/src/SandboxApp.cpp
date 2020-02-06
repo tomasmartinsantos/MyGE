@@ -10,12 +10,12 @@ class ExampleLayer : public MyGE::Layer
         {
         }
 
-        void OnUpdate() override
+        virtual void OnUpdate() override
         {
             MG_INFO("ExampleLayer::OnUpdate");
         }
 
-        void OnEvent(MyGE::Event& Event) override
+        virtual void OnEvent(MyGE::Event& Event) override
         {
             MG_TRACE("{0}", Event);
         }

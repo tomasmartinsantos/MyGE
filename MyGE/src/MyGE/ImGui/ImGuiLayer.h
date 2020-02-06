@@ -16,10 +16,10 @@ namespace MyGE {
             ImGuiLayer();
             ~ImGuiLayer();
 
-            void OnAttach() override;
-            void OnDetach() override;
-            void OnUpdate() override;
-            void OnEvent(Event& E) override;
+            virtual void OnAttach() override;
+            virtual void OnDetach() override;
+            virtual void OnUpdate() override;
+            virtual void OnEvent(Event& E) override;
         private:
             bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& E);
             bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& E);

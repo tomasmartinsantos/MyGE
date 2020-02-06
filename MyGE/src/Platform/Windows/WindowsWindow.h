@@ -14,15 +14,17 @@ namespace MyGE {
             WindowsWindow(const WindowProps& Props);
             virtual ~WindowsWindow();
 
-            void OnUpdate() override;
+            virtual void OnUpdate() override;
 
-            inline unsigned int GetWidth() const override { return m_Data.Width; }
-            inline unsigned int GetHeight() const override { return m_Data.Height; }
+            inline virtual unsigned int GetWidth() const override { return m_Data.Width; }
+            inline virtual unsigned int GetHeight() const override { return m_Data.Height; }
 
             // Window Attributes
-            inline void SetEventCallback(const EventCallbackFn& Callback) override { m_Data.EventCallback = Callback; }
-            void SetVSync(bool Enabled) override;
-            bool IsVSync() const override;
+            inline virtual void SetEventCallback(const EventCallbackFn& Callback) override { m_Data.EventCallback = Callback; }
+            virtual void SetVSync(bool Enabled) override;
+            virtual bool IsVSync() const override;
+
+            inline virtual void* GetNativeWindow() const override { return m_Window; }
         private:
             virtual void Init(const WindowProps& Props);
             virtual void Shutdown();
