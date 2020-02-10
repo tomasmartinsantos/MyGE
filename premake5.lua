@@ -13,9 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories realtive to root folder (solution directory)
 IncludeDir = {}
-IncludeDir["GLFW"] = "MyGE/Vendor/GLFW/include"
-IncludeDir["Glad"] = "MyGE/Vendor/Glad/include"
-IncludeDir["ImGui"] = "MyGE/Vendor/imgui"
+IncludeDir["GLFW"] = "MyGE/vendor/GLFW/include"
+IncludeDir["Glad"] = "MyGE/vendor/Glad/include"
+IncludeDir["ImGui"] = "MyGE/vendor/imgui"
+IncludeDir["glm"] = "MyGE/vendor/glm"
 
 group "Dependencies"
 	include "MyGE/vendor/GLFW"
@@ -40,6 +41,8 @@ project "MyGE"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs
@@ -48,7 +51,8 @@ project "MyGE"
 		"%{prj.name}/vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -108,7 +112,8 @@ project "Sandbox"
 	includedirs
 	{
 		"MyGE/vendor/spdlog/include",
-		"MyGE/src"
+		"MyGE/src",
+		"%{IncludeDir.glm}"
 	}
 
 	links
