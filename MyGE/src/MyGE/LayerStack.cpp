@@ -6,7 +6,6 @@ namespace MyGE {
 
     LayerStack::LayerStack()
     {
-        m_LayerInsert = m_Layers.begin();
     }
 
     LayerStack::~LayerStack()
@@ -19,12 +18,15 @@ namespace MyGE {
 
     void LayerStack::PushLayer(Layer* Layer)
     {
-        m_LayerInsert = m_Layers.emplace(m_LayerInsert, Layer);
+        m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, Layer);
+        m_LayerInsertIndex++;
+        Layer->OnAttach();
     }
 
     void LayerStack::PushOverlay(Layer* Overlay)
     {
         m_Layers.emplace_back(Overlay);
+        Overlay->OnAttach();
     }
 
     void LayerStack::PopLayer(Layer* Layer)
@@ -33,7 +35,8 @@ namespace MyGE {
         if (It != m_Layers.end())
         {
             m_Layers.erase(It);
-            m_LayerInsert--;
+            m_LayerInsertIndex--;
+            Layer->OnDetach();
         }
     }
 
@@ -43,6 +46,7 @@ namespace MyGE {
         if (It != m_Layers.end())
         {
             m_Layers.erase(It);
+            Overlay->OnDetach();
         }
     }
 }

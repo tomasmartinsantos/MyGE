@@ -5,6 +5,7 @@
 #include "MyGE/LayerStack.h"
 #include "MyGE/Events/Event.h"
 #include "MyGE/Events/ApplicationEvent.h"
+#include "MyGe/ImGui/ImGuiLayer.h"
 
 
 namespace MyGE {
@@ -31,6 +32,7 @@ namespace MyGE {
         // Variables
         private:
             std::unique_ptr<Window> m_Window;
+            ImGuiLayer* m_ImGuiLayer;
             bool m_Running = true;
             LayerStack m_LayerStack;
 

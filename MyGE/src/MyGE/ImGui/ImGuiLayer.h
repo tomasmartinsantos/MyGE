@@ -18,20 +18,9 @@ namespace MyGE {
 
             virtual void OnAttach() override;
             virtual void OnDetach() override;
-            virtual void OnUpdate() override;
-            virtual void OnEvent(Event& E) override;
-        private:
-            bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& E);
-            bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& E);
-            bool OnMouseMovedEvent(MouseMovedEvent& E);
-            bool OnMouseScrolledEvent(MouseScrolledEvent& E);
-            bool OnKeyPressedEvent(KeyPressedEvent& E);
-            bool OnKeyReleasedEvent(KeyReleasedEvent& E);
-            bool OnKeyTypedEvent(KeyTypedEvent& E);
-            bool OnWindowResizeEvent(WindowResizeEvent& E);
+            virtual void OnImGuiRender() override;
 
-        // Variables
-        private:
-            float m_Time = 0.0f;
+            void Begin();
+            void End();
     };
 }

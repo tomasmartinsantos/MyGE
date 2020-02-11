@@ -32,7 +32,6 @@ class Sandbox : public MyGE::Application
         Sandbox()
         {
             PushLayer(new ExampleLayer());
-            PushOverlay(new MyGE::ImGuiLayer());
         }
 
         ~Sandbox()

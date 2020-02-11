@@ -113,6 +113,7 @@ project "Sandbox"
 	{
 		"MyGE/vendor/spdlog/include",
 		"MyGE/src",
+		"MyGE/vendor",
 		"%{IncludeDir.glm}"
 	}
 
