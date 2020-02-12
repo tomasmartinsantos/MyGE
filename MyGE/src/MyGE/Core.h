@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef MG_PLATFORM_WINDOWS
-    #ifdef MG_BUILD_DLL
-        #define MYGE_API __declspec(dllexport)
+    #if MG_DYNAMIC_LINK
+        #ifdef MG_BUILD_DLL
+            #define MYGE_API __declspec(dllexport)
+        #else
+            #define MYGE_API __declspec(dllimport)
+        #endif
     #else
-        #define MYGE_API __declspec(dllimport)
+        #define MYGE_API
     #endif
 #else
     #error MyGE only supports Windows

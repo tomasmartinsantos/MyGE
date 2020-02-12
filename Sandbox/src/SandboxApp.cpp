@@ -1,4 +1,5 @@
 #include <MyGE.h>
+#include "imgui/imgui.h"
 
 
 class ExampleLayer : public MyGE::Layer
@@ -22,6 +23,13 @@ class ExampleLayer : public MyGE::Layer
         virtual void OnEvent(MyGE::Event& Event) override
         {
             //MG_TRACE("{0}", Event);
+        }
+
+        virtual void OnImGuiRender() override
+        {
+            ImGui::Begin("Test");
+            ImGui::Text("Hello World");
+            ImGui::End();
         }
 };
 
