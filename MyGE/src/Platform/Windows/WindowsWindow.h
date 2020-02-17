@@ -1,8 +1,9 @@
 #pragma once
 
 #include "MyGE/Window.h"
+#include "MyGE/Renderer/GraphicsContext.h"
 
-#include "GLFW/glfw3.h"
+#include <GLFW/glfw3.h>
 
 
 namespace MyGE {
@@ -32,6 +33,7 @@ namespace MyGE {
         // Variables
         private:
             GLFWwindow* m_Window;
+            GraphicsContext* m_Context;
 
             struct WindowData
             {
