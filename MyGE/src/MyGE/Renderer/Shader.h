@@ -7,14 +7,11 @@ namespace MyGE {
     {
         // Methods
         public:
-            Shader(const std::string& VertexSrc, const std::string& FragmentSrc);
-            ~Shader();
+            virtual ~Shader() {}
 
-            void Bind() const;
-            void Unbind() const;
+            virtual void Bind() const = 0;
+            virtual void Unbind() const = 0;
 
-        // Variables
-        private:
-            uint32_t m_RendererID;
+            static Shader* Create(const std::string& VertexSrc, const std::string& FragmentSrc);
     };
 }

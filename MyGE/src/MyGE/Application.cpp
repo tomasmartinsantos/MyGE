@@ -80,7 +80,7 @@ namespace MyGE {
             }
         )";
 
-        m_Shader.reset(new Shader(VertexSrc, FragmentSrc));
+        m_Shader.reset(Shader::Create(VertexSrc, FragmentSrc));
     }
 
     Application::~Application()

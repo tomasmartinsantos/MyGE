@@ -6,7 +6,7 @@
 
 namespace MyGE {
 
-    VertexBuffer* MyGE::VertexBuffer::Create(float* Vertices, uint32_t Size)
+    VertexBuffer* VertexBuffer::Create(float* Vertices, uint32_t Size)
     {
         switch (Renderer::GetAPI())
         {
@@ -18,7 +18,7 @@ namespace MyGE {
         return nullptr;
     }
 
-    IndexBuffer* MyGE::IndexBuffer::Create(uint32_t* Indices, uint32_t Count)
+    IndexBuffer* IndexBuffer::Create(uint32_t* Indices, uint32_t Count)
     {
         switch (Renderer::GetAPI())
         {
