@@ -25,39 +25,13 @@ namespace MyGE {
         glGenVertexArrays(1, & m_VertexArray);
         glBindVertexArray(m_VertexArray);
 
-        /*
-        glGenBuffers(GLsizei N, const GLuint* Buffers);
-
-        Genera el numero de buffers especificado por N, y coloca sus ids en el array Buffers (debe tener al menos N elementos)
-        */
-        glGenBuffers(1, &m_VertexBuffer);
-
-        /*
-        glBindBuffer(GLenum Target, const GLuint* Buffer);
-
-        Establece el buffer activo, que recibira OpenGL para dibujar
-        GL_ARRAY_BUFFER: el buffer contiene info de los vertices (coords, normales, color, ...)
-        GL_ELEMENT_ARRAY_BUFFER: el buffer contiene los indices a los vertices con los que se forma la geometria de los elementos a dibujar
-        */
-        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
-        float vertices[3 * 3] = {
+        float Vertices[3 * 3] = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
              0.0f,  0.5f, 0.0f
         };
 
-        /*
-        glBufferData(GLenum Target, GLsizeiptr Size, const GLvoid* Data, GLenum Usage);
-
-        Envia los datos al buffer. Estos datos deben estar en el array apuntado por Data, y el tamano en bytes del bloque de memoria que los contiene se especifica en Size.
-        - Un buffer de indices (IndexBuffer) recibira el array con los indices a los vertices.
-        - Un buffer de vertices (VertexBuffer) recibira el array con los datos de los vertices(posicion, normal, color...)
-        GL_STATIC_DRAW: Solicita que los datos se carguen en la memoria de video. Util cuando la info en Data no va a ser modifcada frecuentemente (mallas estaticas, buffers de indices)
-        GL_DYNAMIC_DRAW: Solicitaque los datos se carguen en memoria principal. Util cuando los datos cambian frecuentemente (mallas animadas)
-        GL_STREAM_DRAW: los datos no cambian a menudo y no se usan frecuentemente, con lo que se vuelcan en memoria de video cuando sea necesario
-        */
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        m_VertexBuffer.reset(VertexBuffer::Create(Vertices, sizeof(Vertices)));
 
         /*
         glEnableVertexAttribArray(GLuint Index);
@@ -79,11 +53,9 @@ namespace MyGE {
         */
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
-        glGenBuffers(1, &m_IndexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+        unsigned int Indices[3] = { 0, 1, 2 };
 
-        unsigned int indices[3] = { 0, 1, 2 };
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        m_IndexBuffer.reset(IndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
 
         std::string VertexSrc = R"(
             #version 330 core
@@ -161,7 +133,7 @@ namespace MyGE {
             Type: Formato en que estan definidos los indices en el array (GL_UNSIGNED_INT, GL_UNSIGNED_SHORT)
             Indices: con Vertex Buffer Objects, el parametro es NULL
             */
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* Layer : m_LayerStack)
             {

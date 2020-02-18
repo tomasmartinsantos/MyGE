@@ -6,6 +6,7 @@
 namespace MyGE {
 
     Shader::Shader(const std::string& VertexSrc, const std::string& FragmentSrc)
+        : m_RendererID(0)
     {
         /*********************************************************************/
         /* CODE FROM  https://www.khronos.org/opengl/wiki/Shader_Compilation */
