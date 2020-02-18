@@ -5,7 +5,9 @@
 #include "MyGE/LayerStack.h"
 #include "MyGE/Events/Event.h"
 #include "MyGE/Events/ApplicationEvent.h"
-#include "MyGe/ImGui/ImGuiLayer.h"
+#include "MyGE/ImGui/ImGuiLayer.h"
+
+#include "MyGE/Renderer/Shader.h"
 
 
 namespace MyGE {
@@ -37,6 +39,7 @@ namespace MyGE {
             LayerStack m_LayerStack;
 
             unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+            std::unique_ptr<Shader> m_Shader;
 
             static Application* s_Instance;
     };
