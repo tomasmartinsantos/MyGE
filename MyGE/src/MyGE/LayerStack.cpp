@@ -34,9 +34,9 @@ namespace MyGE {
         auto It = std::find(m_Layers.begin(), m_Layers.end(), Layer);
         if (It != m_Layers.end())
         {
+            Layer->OnDetach();
             m_Layers.erase(It);
             m_LayerInsertIndex--;
-            Layer->OnDetach();
         }
     }
 
@@ -45,8 +45,8 @@ namespace MyGE {
         auto It = std::find(m_Layers.begin(), m_Layers.end(), Overlay);
         if (It != m_Layers.end())
         {
-            m_Layers.erase(It);
             Overlay->OnDetach();
+            m_Layers.erase(It);
         }
     }
 }

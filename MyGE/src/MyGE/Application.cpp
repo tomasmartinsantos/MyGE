@@ -11,27 +11,6 @@ namespace MyGE {
 
     Application* Application::s_Instance = nullptr;
 
-    static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-    {
-        switch (type)
-        {
-            case ShaderDataType::Float:    return GL_FLOAT;
-            case ShaderDataType::Float2:   return GL_FLOAT;
-            case ShaderDataType::Float3:   return GL_FLOAT;
-            case ShaderDataType::Float4:   return GL_FLOAT;
-            case ShaderDataType::Mat3:     return GL_FLOAT;
-            case ShaderDataType::Mat4:     return GL_FLOAT;
-            case ShaderDataType::Int:      return GL_INT;
-            case ShaderDataType::Int2:     return GL_INT;
-            case ShaderDataType::Int3:     return GL_INT;
-            case ShaderDataType::Int4:     return GL_INT;
-            case ShaderDataType::Bool:     return GL_BOOL;
-        }
-
-        MG_CORE_ASSERT(false, "Unknown ShaderDataType!");
-        return 0;
-    }
-
     Application::Application()
     {
         MG_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -43,8 +22,8 @@ namespace MyGE {
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
 
-        glGenVertexArrays(1, & m_VertexArray);
-        glBindVertexArray(m_VertexArray);
+        // TRIANGLE
+        m_VertexArray.reset(VertexArray::Create());
 
         float Vertices[3 * 7] = {
             -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -52,53 +31,41 @@ namespace MyGE {
              0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
         };
 
-        m_VertexBuffer.reset(VertexBuffer::Create(Vertices, sizeof(Vertices)));
-
-        {
-            BufferLayout Layout = {
-                { ShaderDataType::Float3, "a_Position" },
-                { ShaderDataType::Float4, "a_Color" }
-            };
-
-            m_VertexBuffer->SetLayout(Layout);
-        }
-
-        uint32_t Index = 0;
-        const auto& Layout = m_VertexBuffer->GetLayout();
-        for (const auto& Element : Layout)
-        {
-            /*
-            glEnableVertexAttribArray(GLuint Index);
-
-            Activa la escritura por el pipeline para una variable Attribute cuya localizacion se pasa en el parametro index
-            */
-            glEnableVertexAttribArray(Index);
-
-            /*
-            glVertexAttribPointer(GLuint Index, GLint Size, GLenum Type, GLboolean Normalized, GLsizei Stride, const GLvoid* Pointer);
-
-            Especifica los datos que se van a colocar en la localizacion de una variable attribute cuya escritura haya sido activada con glEnableVertexAttribArray.
-            Index: localizacion de la variable en la que escribir los valores
-            Size: numero de componentes a escribir por vertice (3 para posiciones y normales, 4 para colores, 2 para coords de textura)
-            Type: tipo con el que le pasamos los datos (GL_FLOAT, GL_UNSIGNED_BYTE)
-            Normalized: si se deben normalizar los datos enviados (por ejemplo, [0, 255]->[0, 1])
-            Stride: tamano del paquete de datos completo para un vertice
-            Pointer: offset dentro del buffer activo en que se encuentra el primer dato
-            */
-            glVertexAttribPointer(Index,
-                Element.GetComponentCount(),
-                ShaderDataTypeToOpenGLBaseType(Element.Type),
-                Element.Normalized ? GL_TRUE : GL_FALSE,
-                Layout.GetStride(),
-                (const void*)Element.Offset);
-            Index++;
-        }
-
-
+        std::shared_ptr<VertexBuffer> vertexBuffer;
+        vertexBuffer.reset(VertexBuffer::Create(Vertices, sizeof(Vertices)));
+        BufferLayout layout = {
+            { ShaderDataType::Float3, "a_Position" },
+            { ShaderDataType::Float4, "a_Color" }
+        };
+        vertexBuffer->SetLayout(layout);
+        m_VertexArray->AddVertexBuffer(vertexBuffer);
 
         unsigned int Indices[3] = { 0, 1, 2 };
+        std::shared_ptr<IndexBuffer> indexBuffer;
+        indexBuffer.reset(IndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
+        m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_IndexBuffer.reset(IndexBuffer::Create(Indices, sizeof(Indices) / sizeof(uint32_t)));
+        // SQUARE
+        m_SquareVA.reset(VertexArray::Create());
+
+        float squareVertices[3 * 4] = {
+            -0.75f, -0.75f, 0.0f,
+             0.75f, -0.75f, 0.0f,
+             0.75f,  0.75f, 0.0f,
+            -0.75f,  0.75f, 0.0f
+        };
+
+        std::shared_ptr<VertexBuffer> SquareVB;
+        SquareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        SquareVB->SetLayout({
+            { ShaderDataType::Float3, "a_Position" }
+            });
+        m_SquareVA->AddVertexBuffer(SquareVB);
+
+        uint32_t SquareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+        std::shared_ptr<IndexBuffer> SquareIB;
+        SquareIB.reset(IndexBuffer::Create(SquareIndices, sizeof(SquareIndices) / sizeof(uint32_t)));
+        m_SquareVA->SetIndexBuffer(SquareIB);
 
         std::string VertexSrc = R"(
             #version 330 core
@@ -133,6 +100,31 @@ namespace MyGE {
         )";
 
         m_Shader.reset(Shader::Create(VertexSrc, FragmentSrc));
+
+        std::string BlueShaderVertexSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) in vec3 a_Position;
+            out vec3 v_Position;
+            void main()
+            {
+                v_Position = a_Position;
+                gl_Position = vec4(a_Position, 1.0);	
+            }
+        )";
+
+        std::string BlueShaderFragmentSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) out vec4 color;
+            in vec3 v_Position;
+            void main()
+            {
+                color = vec4(0.2, 0.3, 0.8, 1.0);
+            }
+        )";
+
+        m_BlueShader.reset(Shader::Create(BlueShaderVertexSrc, BlueShaderFragmentSrc));
     }
 
     Application::~Application()
@@ -173,9 +165,12 @@ namespace MyGE {
             glClearColor(0.1f, 0.1f, 0.1f, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            m_BlueShader->Bind();
+            m_SquareVA->Bind();
+            glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             m_Shader->Bind();
-            glBindVertexArray(m_VertexArray);
+            m_VertexArray->Bind();
             /*
             glDrawElements(GLenum Mode, GLsizei Count, GLenum Type, const GLvoid* Indices);
 
@@ -185,7 +180,7 @@ namespace MyGE {
             Type: Formato en que estan definidos los indices en el array (GL_UNSIGNED_INT, GL_UNSIGNED_SHORT)
             Indices: con Vertex Buffer Objects, el parametro es NULL
             */
-            glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* Layer : m_LayerStack)
             {
