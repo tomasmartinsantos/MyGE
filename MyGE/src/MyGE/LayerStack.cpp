@@ -31,7 +31,7 @@ namespace MyGE {
 
     void LayerStack::PopLayer(Layer* Layer)
     {
-        auto It = std::find(m_Layers.begin(), m_Layers.end(), Layer);
+        auto It = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, Layer);
         if (It != m_Layers.end())
         {
             Layer->OnDetach();
@@ -42,7 +42,7 @@ namespace MyGE {
 
     void LayerStack::PopOverlay(Layer* Overlay)
     {
-        auto It = std::find(m_Layers.begin(), m_Layers.end(), Overlay);
+        auto It = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), Overlay);
         if (It != m_Layers.end())
         {
             Overlay->OnDetach();

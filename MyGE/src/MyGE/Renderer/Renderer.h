@@ -1,20 +1,17 @@
 #pragma once
+#include "RenderCommand.h"
 
 namespace MyGE {
-
-    enum class RendererAPI
-    {
-        None = 0, OpenGL = 1
-    };
 
     class Renderer
     {
         // Methods
         public:
-            inline static RendererAPI GetAPI() { return s_RendererAPI; }
+            static void BeginScene();
+            static void EndScene();
 
-        // Variables
-        private:
-            static RendererAPI s_RendererAPI;
+            static void Submit(const std::shared_ptr<VertexArray>& VertexArray);
+
+            inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
     };
 }

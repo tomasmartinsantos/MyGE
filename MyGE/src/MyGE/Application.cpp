@@ -3,8 +3,7 @@
 
 #include "MyGE/Log.h"
 #include "MyGE/Input.h"
-
-#include <glad/glad.h>
+#include "MyGE/Renderer/Renderer.h"
 
 
 namespace MyGE {
@@ -162,25 +161,16 @@ namespace MyGE {
     {
         while (m_Running)
         {
-            glClearColor(0.1f, 0.1f, 0.1f, 1);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+            RenderCommand::Clear();
+
+            Renderer::BeginScene();
 
             m_BlueShader->Bind();
-            m_SquareVA->Bind();
-            glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_SquareVA);
 
             m_Shader->Bind();
-            m_VertexArray->Bind();
-            /*
-            glDrawElements(GLenum Mode, GLsizei Count, GLenum Type, const GLvoid* Indices);
-
-            Dibuja la geometria especificada por el buffer de indices y el buffer de vertices
-            Mode: tipo de primitiva a dibujar (normalmente GL_TRIANGLES)
-            Count: numero de indices contenido en el buffer de indices
-            Type: Formato en que estan definidos los indices en el array (GL_UNSIGNED_INT, GL_UNSIGNED_SHORT)
-            Indices: con Vertex Buffer Objects, el parametro es NULL
-            */
-            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::Submit(m_VertexArray);
 
             for (Layer* Layer : m_LayerStack)
             {

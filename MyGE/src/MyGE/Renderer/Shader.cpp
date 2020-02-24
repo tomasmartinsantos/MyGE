@@ -10,8 +10,8 @@ namespace MyGE {
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-            case RendererAPI::OpenGL:   return new OpenGLShader(VertexSrc, FragmentSrc);
+            case RendererAPI::API::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+            case RendererAPI::API::OpenGL:   return new OpenGLShader(VertexSrc, FragmentSrc);
         }
 
         MG_CORE_ASSERT(false, "Unknown RendererAPI!");

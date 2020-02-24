@@ -10,8 +10,8 @@ namespace MyGE {
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-            case RendererAPI::OpenGL:   return new OpenGLVertexBuffer(Vertices, Size);
+        case RendererAPI::API::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+            case RendererAPI::API::OpenGL:   return new OpenGLVertexBuffer(Vertices, Size);
         }
 
         MG_CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -22,8 +22,8 @@ namespace MyGE {
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-            case RendererAPI::OpenGL:   return new OpenGLIndexBuffer(Indices, Count);
+            case RendererAPI::API::None:     MG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+            case RendererAPI::API::OpenGL:   return new OpenGLIndexBuffer(Indices, Count);
         }
 
         MG_CORE_ASSERT(false, "Unknown RendererAPI!");
