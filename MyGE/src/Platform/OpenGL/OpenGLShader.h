@@ -14,6 +14,10 @@ namespace MyGE {
             virtual void Bind() const override;
             virtual void Unbind() const override;
 
+            virtual void SetMat4(const std::string& Name, const glm::mat4& Value) override;
+
+            void UploadUniformMat4(const std::string& Name, const glm::mat4& Matrix);
+
         // Variables
         private:
             uint32_t m_RendererID;

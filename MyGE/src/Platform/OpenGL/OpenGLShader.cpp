@@ -1,6 +1,7 @@
 #include "mgpch.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 
 namespace MyGE {
@@ -124,5 +125,16 @@ namespace MyGE {
     void OpenGLShader::Unbind() const
     {
         glUseProgram(0);
+    }
+
+    void OpenGLShader::SetMat4(const std::string& Name, const glm::mat4& Value)
+    {
+        UploadUniformMat4(Name, Value);
+    }
+
+    void OpenGLShader::UploadUniformMat4(const std::string& Name, const glm::mat4& Matrix)
+    {
+        GLint Location = glGetUniformLocation(m_RendererID, Name.c_str());
+        glUniformMatrix4fv(Location, 1, GL_FALSE, glm::value_ptr(Matrix));
     }
 }

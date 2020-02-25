@@ -10,6 +10,7 @@
 #include "MyGE/Renderer/Shader.h"
 #include "MyGE/Renderer/Buffer.h"
 #include "MyGE/Renderer/VertexArray.h"
+#include "MyGE/Renderer/Camera.h"
 
 
 namespace MyGE {
@@ -45,6 +46,8 @@ namespace MyGE {
 
             std::shared_ptr<Shader> m_BlueShader;
             std::shared_ptr<VertexArray> m_SquareVA;
+
+            OrthographicCamera m_Camera;
 
             static Application* s_Instance;
     };
